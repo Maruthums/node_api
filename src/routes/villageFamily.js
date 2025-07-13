@@ -1,13 +1,14 @@
 const express = require('express');
 const dotenv = require('dotenv');
 dotenv.config();
+const path = require('path'); 
 const router = express.Router();
 const { google } = require('googleapis');
 const transformSheetData = require('../modules/villageList');
 const SHEET_ID = process.env.SHEET_ID;
-
+const SERVICE_ACCOUNT_FILE = path.resolve(process.env.GOOGLE_APPLICATION_CREDENTIALS);
 const auth = new google.auth.GoogleAuth({
-  keyFile: 'credentials.json',
+  keyFile: SERVICE_ACCOUNT_FILE,
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 });
 

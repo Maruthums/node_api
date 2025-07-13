@@ -156,3 +156,15 @@ Desktop.ini
 /adhoc/cloudfiles-migration/vendor/
 
 *.env
+# Google Cloud service account keys
+*.json
+!package.json
+
+# Specifically ignore any credentials
+**/credentials.json
+**/drive_credentials.json
+
+# Environment variables
+.env
+.env.local
+.env.*.local

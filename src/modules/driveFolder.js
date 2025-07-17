@@ -2,7 +2,7 @@ const { google } = require('googleapis');
 const path = require('path');
 const dotenv = require('dotenv');
 dotenv.config();
-const SERVICE_ACCOUNT_FILE = path.join(__dirname, '../../credentials.json');
+const SERVICE_ACCOUNT_FILE = path.resolve(process.env.GOOGLE_APPLICATION_CREDENTIALS);
 
 // const SERVICE_ACCOUNT_FILE = path.join(__dirname, '../credentials.json');
 const PARENT_FOLDER_ID = process.env.FOLDER_ID;
@@ -34,7 +34,7 @@ async function getFoldersWithImages() {
 
   const images = imageList.data.files.map(file => ({
     name: folder.name,
-    image: `https://drive.google.com/uc?id=${file.id}`,
+    image: `https://drive.google.com/thumbnail?id=${file.id}`,
   }));
 
   result[folder.name] = images;

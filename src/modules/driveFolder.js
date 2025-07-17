@@ -34,7 +34,7 @@ async function getFoldersWithImages() {
 
   const images = imageList.data.files.map(file => ({
     name: folder.name,
-    image: `https://drive.google.com/uc?id=${file.id}`,
+    image: `https://drive.google.com/thumbnail?id=${file.id}`,
   }));
 
   result[folder.name] = images;

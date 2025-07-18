@@ -1,13 +1,14 @@
 const express = require('express');
 const dotenv = require('dotenv');
 dotenv.config();
+const path = require('path'); 
 const router = express.Router();
 const { google } = require('googleapis');
 const transformSheetData = require('../modules/villageList');
 const SHEET_ID = process.env.SHEET_ID;
-
+const SERVICE_ACCOUNT_FILE = path.resolve(process.env.GOOGLE_APPLICATION_CREDENTIALS);
 const auth = new google.auth.GoogleAuth({
-  keyFile: 'credentials.json',
+  keyFile: SERVICE_ACCOUNT_FILE,
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 });
 
@@ -24,10 +25,9 @@ router.get('/get', async (req, res) => {
       range: `${SHEET_NAME}!A1:Z1000`,
     });
 
-    const convertedData = transformSheetData(result.data.values);
+    const convertedData = await transformSheetData(result.data.values);
     res.json(convertedData);
   } catch (error) {
-    console.error('❌ READ ERROR:', error.message);
     res.status(500).json({ error: 'Failed to read data' });
   }
 });
@@ -48,7 +48,6 @@ router.post('/write', async (req, res) => {
 
     res.json({ status: 'Row(s) appended' });
   } catch (error) {
-    console.error('❌ WRITE ERROR:', error.message);
     res.status(500).json({ error: 'Failed to write data' });
   }
 });
@@ -69,7 +68,6 @@ router.post('/update', async (req, res) => {
 
     res.json({ status: 'Range updated' });
   } catch (error) {
-    console.error('❌ UPDATE ERROR:', error.message);
     res.status(500).json({ error: 'Failed to update data' });
   }
 });

@@ -25,10 +25,9 @@ router.get('/get', async (req, res) => {
       range: `${SHEET_NAME}!A1:Z1000`,
     });
 
-    const convertedData = transformSheetData(result.data.values);
+    const convertedData = await transformSheetData(result.data.values);
     res.json(convertedData);
   } catch (error) {
-    console.error('❌ READ ERROR:', error.message);
     res.status(500).json({ error: 'Failed to read data' });
   }
 });
@@ -49,7 +48,6 @@ router.post('/write', async (req, res) => {
 
     res.json({ status: 'Row(s) appended' });
   } catch (error) {
-    console.error('❌ WRITE ERROR:', error.message);
     res.status(500).json({ error: 'Failed to write data' });
   }
 });
@@ -70,7 +68,6 @@ router.post('/update', async (req, res) => {
 
     res.json({ status: 'Range updated' });
   } catch (error) {
-    console.error('❌ UPDATE ERROR:', error.message);
     res.status(500).json({ error: 'Failed to update data' });
   }
 });
